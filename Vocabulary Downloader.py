@@ -28,9 +28,8 @@ chrome.get('http://krdic.naver.com/')
 
 # -----------------------------PARAMETER-------------------------------------
 # wordString is used for storing the word list.
-wordString = '공장 열 극장 회사 장소 간판 직업 수업 고기 돼지 돼지고기 소 소고기 꽃 값 땅콩 축구 야구 여권 수건 체육 ' \
-             '지하철 되다 시작하다 행동하다 소개하다 발견하다 방문하다 잃다 잃어버리다 벗다 웃다 부끄럽다 건강하다 ' \
-             '예쁘다 미래 이제 현재'
+wordString = '하나 둘 셋 넷 다섯 여섯 일곱 여덟 아홉 열 스물 서른 마흔 쉰 일 이 삼 사 오 육 칠 팔 구 십 백 천 만 영 공 ' \
+             '처음 마지막 번째 첫 번째 두 번째 개 번 명 대 잔 시 분 초 살 '
 # downloadPath is used for indicating the path to store files
 downloadPath = 'C:/Users/jingy/Downloads/'
 # fileFormat is used for indicating the file storage format
@@ -70,6 +69,9 @@ for word in wordList:
                 buttonXPath = buttonFatherXPath + '/span'
                 button = chrome.find_element_by_xpath(buttonXPath)
 
+                # play the mp3
+                button.click()
+
                 # get the link and download
                 fileURL = button.get_attribute('purl')
                 urllib.request.urlretrieve(fileURL, downloadPath + word + fileFormat)
@@ -96,6 +98,9 @@ for word in wordList:
                     buttonXPath = buttonFatherXPath + '/span'
                     button = chrome.find_element_by_xpath(buttonXPath)
 
+                    # play the mp3
+                    button.click()
+
                     # get the link and download
                     fileURL = button.get_attribute('purl')
                     urllib.request.urlretrieve(fileURL, downloadPath + word + fileFormat)
@@ -121,6 +126,9 @@ for word in wordList:
                         print(word + ' is going to download')
                         buttonXPath = buttonFatherXPath + '/span'
                         button = chrome.find_element_by_xpath(buttonXPath)
+
+                        # play the mp3
+                        button.click()
 
                         # get the link and download
                         fileURL = button.get_attribute('purl')
