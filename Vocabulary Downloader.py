@@ -28,8 +28,9 @@ chrome.get('http://krdic.naver.com/')
 
 # -----------------------------PARAMETER-------------------------------------
 # wordString is used for storing the word list.
-wordString = '하나 둘 셋 넷 다섯 여섯 일곱 여덟 아홉 열 스물 서른 마흔 쉰 일 이 삼 사 오 육 칠 팔 구 십 백 천 만 영 공 ' \
-             '처음 마지막 번째 첫 번째 두 번째 개 번 명 대 잔 시 분 초 살 '
+wordString = '일월 이월 삼월 사월 오월 유월 칠월 팔월 구월 시월 십일월 십이월 기회 계획 회사원 요리사 운전사 달리다 ' \
+             '요리하다 운전하다 죽다 두렵다 이상하다 동안 달 개월 날 하루 이틀 사흘 지난 주 지난 달 이번 주 이번 달 ' \
+             '다음 주 다음 달 작년 올해 내년 평생 보통  '
 # downloadPath is used for indicating the path to store files
 downloadPath = 'C:/Users/jingy/Downloads/'
 # fileFormat is used for indicating the file storage format
