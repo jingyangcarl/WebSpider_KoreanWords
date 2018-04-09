@@ -24,7 +24,7 @@ import os.path
 
 # -----------------------------PARAMETER-------------------------------------
 # web page url
-url = "https://www.howtostudykorean.com/unit1/unit-1-lessons-9-16/unit-1-lesson-10/"
+url = "https://www.howtostudykorean.com/unit1/unit-1-lessons-9-16/lesson-16/"
 # downloadPath is used for indicating the path to store files
 dirPath = 'C:/Users/jingy/Downloads/HowToStudyKorean/'
 # fileFormat is used for indicating the file storage format
@@ -36,6 +36,7 @@ unit = re.search('unit\d*/', url).group(0)
 dirPath = dirPath + unit
 # lesson number
 lesson = re.search('lesson-\d*/', url).group(0)
+# dirpath
 dirPath = dirPath + lesson
 if not os.path.exists(dirPath):
     os.makedirs(dirPath)
@@ -43,6 +44,7 @@ if not os.path.exists(dirPath):
 headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
 request = urllib.request.Request(url, headers=headers)
 HTMLRetryTime = 0
+audioNum = 0
 
 while 1:
     try:
@@ -64,7 +66,7 @@ while 1:
 
                 # get audio name
                 audioName = re.search('>.*<', audioLine)
-                audioName = audioName.group(0).strip('>').strip('<')
+                audioName = audioName.group(0).lstrip('>').rstrip('<')
                 audioName = re.sub('<[\w/]*>', '', audioName)
                 audioName = re.sub('[?!]', '', audioName)
                 # if there is an illegal symbols, add it into the pattern
@@ -82,10 +84,14 @@ while 1:
                         audio = open(downloadPath, 'wb')
                         audio.write(requestHTML)
                         audio.close()
+                        audioNum = audioNum + 1
                         print(audioName + " downloaded")
                     except:
                         downloadRetryTime = downloadRetryTime + 1
                         print(audioName + " download retry: " + str(downloadRetryTime))
+        print('all finished')
+        print('Audios: ' + audioNum)
+        os._exit(0)
     except:
         HTMLRetryTime = HTMLRetryTime + 1
         print("html retry: " + str(HTMLRetryTime))
