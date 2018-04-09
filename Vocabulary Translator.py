@@ -2,7 +2,7 @@ import time
 from selenium import webdriver
 
 # -------------------------------FUNCTION------------------------------------
-# The code is used for translate Korean words into Chinese as a guider and help with the correctness of spelling.
+# The code is used for translating Korean words into Chinese as a guider and help with the correctness of spelling.
 # Chinese translations are from https://dict.hjenglish.com/kr/, which is a dictionary for different languages.
 # By setting the environment and parameters, the code will automatically operate Chrome for given words.
 
@@ -25,9 +25,9 @@ chrome.get('https://dict.hjenglish.com/kr/')
 
 # -----------------------------PARAMETER-------------------------------------
 # wordString is used for storing the word list.
-wordString = '일월 이월 삼월 사월 오월 유월 칠월 팔월 구월 시월 십일월 십이월 기회 계획 회사원 요리사 운전사 달리다 ' \
-             '요리하다 운전하다 죽다 두렵다 이상하다 동안 달 개월 날 하루 이틀 사흘 지난 주 지난 달 이번 주 이번 달 ' \
-             '다음 주 다음 달 작년 올해 내년 평생 보통  '
+wordString = '경제 경제적 역사 역사적 과학 과학적 충동 충동적 문화 문화적 민주 민주적 개인 개인적 자연 자연스럽다 실망' \
+             ' 실망스럽다 사랑 사랑스럽다 만족 만족스럽다 관계 스트레스 연필 색깔 그 그녀 결과 꿈 세상 세계 회화 문자 ' \
+             '가슴 제목 풀다 꿈꾸다 태어나다 다니다 믿다 가깝다 힘들다 순수하다 조금 근처 나중에 최근에 그러나 '
 # timeStep is used for control the time break between each word.
 timeStep = 5
 
@@ -40,7 +40,7 @@ for word in wordList:
     try:
         chrome.get('https://dict.hjenglish.com/kr/' + str(word))
         print(word + " is processed")
-        time.sleep(5)
+        time.sleep(timeStep)
     except:
         continue
 

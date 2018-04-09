@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 # -------------------------------FUNCTION------------------------------------
-# The code is used for play audio files of given Korean words.
+# The code is used for playing audio files of given Korean words.
 # The audio files are from http://krdic.naver.com/ which is created by Korean.
 # By setting the environment and parameters, the code will automatically operate Chrome for given words,
 
