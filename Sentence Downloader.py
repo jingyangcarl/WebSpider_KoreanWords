@@ -16,15 +16,10 @@ import os.path
 # JVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o
 # Windows 10 10.0
 # Python 3.6.2
-# Selenium 2
-# ChromeDriver
-
-# Selenium: https://selenium-python.readthedocs.io/index.html
-# ChromeDriver: https://sites.google.com/a/chromium.org/chromedriver/getting-started
 
 # -----------------------------PARAMETER-------------------------------------
 # web page url
-url = "https://www.howtostudykorean.com/unit1/unit-1-lessons-9-16/lesson-16/"
+url = "https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-1/"
 # downloadPath is used for indicating the path to store files
 dirPath = 'C:/Users/jingy/Downloads/HowToStudyKorean/'
 # fileFormat is used for indicating the file storage format
