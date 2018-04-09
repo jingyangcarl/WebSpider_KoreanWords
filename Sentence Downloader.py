@@ -90,7 +90,7 @@ while 1:
                         downloadRetryTime = downloadRetryTime + 1
                         print(audioName + " download retry: " + str(downloadRetryTime))
         print('all finished')
-        print('Audios: ' + audioNum)
+        print('Audios: ' + str(audioNum))
         os._exit(0)
     except:
         HTMLRetryTime = HTMLRetryTime + 1
