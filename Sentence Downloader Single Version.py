@@ -19,16 +19,16 @@ import os.path
 
 # -----------------------------PARAMETER-------------------------------------
 # web page url
-url = 'https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-1/'
+url = "https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-1/"
 # downloadPath is used for indicating the path to store files
-dir = 'C:/Users/jingy/Downloads/HowToStudyKorean/'
+dirPath = 'C:/Users/jingy/Downloads/HowToStudyKorean/'
 # fileFormat is used for indicating the file storage format
 fileFormat = ".mp3"
 
 # --------------------------------CODE---------------------------------------
 # unit number
 unit = re.search('unit\d*/', url).group(0)
-dirPath = dir + unit
+dirPath = dirPath + unit
 # lesson number
 lesson = re.search('lesson-\d*/', url).group(0)
 # dirpath
@@ -37,14 +37,12 @@ if not os.path.exists(dirPath):
     os.makedirs(dirPath)
 
 headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
-#request = urllib.request.Request(url, headers=headers)
+request = urllib.request.Request(url, headers=headers)
 HTMLRetryTime = 0
 audioNum = 0
 
 while 1:
-
-    try:
-        request = urllib.request.Request(url, headers=headers)
+    #try:
         html = urllib.request.urlopen(request).readlines()
 
         for line in html:
@@ -86,11 +84,9 @@ while 1:
                     except:
                         downloadRetryTime = downloadRetryTime + 1
                         print(audioName + " download retry: " + str(downloadRetryTime))
-        print(lesson + ' finished')
-        print('audios: ' + str(audioNum))
-        audioNum = 0
-
-
-    except:
-        HTMLRetryTime = HTMLRetryTime + 1
-        print("html retry: " + str(HTMLRetryTime))
+        print('all finished')
+        print('Audios: ' + str(audioNum))
+        os._exit(0)
+    #except:
+        #HTMLRetryTime = HTMLRetryTime + 1
+        #print("html retry: " + str(HTMLRetryTime))
