@@ -18,32 +18,34 @@ import os.path
 # Python 3.6.2
 
 # -----------------------------PARAMETER-------------------------------------
-# web page url
-url = 'https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-1/'
 # downloadPath is used for indicating the path to store files
 dir = 'C:/Users/jingy/Downloads/HowToStudyKorean/'
 # fileFormat is used for indicating the file storage format
 fileFormat = ".mp3"
 
 # --------------------------------CODE---------------------------------------
-# unit number
-unit = re.search('unit\d*/', url).group(0)
-dirPath = dir + unit
-# lesson number
-lesson = re.search('lesson-\d*/', url).group(0)
-# dirpath
-dirPath = dirPath + lesson
-if not os.path.exists(dirPath):
-    os.makedirs(dirPath)
-
-headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
-#request = urllib.request.Request(url, headers=headers)
+# web page url
+url = 'https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-1/'
+headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/24.0'}
 HTMLRetryTime = 0
-audioNum = 0
+lesson = 1
 
-while 1:
+while lesson:
 
     try:
+        # unit number
+        #unit = re.search('unit\d*/', url).group(0)
+        #dirPath = dir + unit
+        unit = int(lesson/25) + 1
+        dirPath = dir + 'unit' + str(unit) + '/lesson-' + str(lesson) + '/'
+        # lesson number
+        #lesson = re.search('lesson-\d*/', url).group(0)
+        #dirPath = dirPath + lesson
+
+        # create path
+        if not os.path.exists(dirPath):
+            os.makedirs(dirPath)
+
         request = urllib.request.Request(url, headers=headers)
         html = urllib.request.urlopen(request).readlines()
 
@@ -72,7 +74,6 @@ while 1:
                 # prepare for downloading
                 downloadPath = dirPath + audioName + fileFormat
                 print(downloadPath)
-                downloadRetryTime = 0
 
                 while not os.path.isfile(downloadPath):
                     try:
@@ -81,16 +82,30 @@ while 1:
                         audio = open(downloadPath, 'wb')
                         audio.write(requestHTML)
                         audio.close()
-                        audioNum = audioNum + 1
                         print(audioName + " downloaded")
-                    except:
-                        downloadRetryTime = downloadRetryTime + 1
-                        print(audioName + " download retry: " + str(downloadRetryTime))
-        print(lesson + ' finished')
-        print('audios: ' + str(audioNum))
-        audioNum = 0
+                    except urllib.error.URLError:
+                        print(audioName + " download retry")
 
+            # find the next link
+            #nextLinkLine_1 = re.search('<a href=".*to the next lesson!</a>', line)
+            nextLinkLine_2 = re.search('Lesson \d+', line)
 
-    except:
-        HTMLRetryTime = HTMLRetryTime + 1
-        print("html retry: " + str(HTMLRetryTime))
+            #if nextLinkLine_1 and nextLinkLine_2:
+            #    url = re.search('http.*"', nextLinkLine_1.group(0)).group(0).rstrip('"')
+            #elif nextLinkLine_1:
+            #    url = re.search('http.*"', nextLinkLine_1.group(0)).group(0).rstrip('"')
+            if nextLinkLine_2:
+                # check the lesson number
+                nextLinkLine_2 = re.search('\d+$', nextLinkLine_2.group(0)).group(0)
+                # check if the unit number is 0
+                check = re.search('unit0', line)
+
+                if int(nextLinkLine_2) == (lesson+1) and not check:
+                    url = re.search('http.*?"', line).group(0).rstrip('"')
+
+        print('lesson ' + str(lesson) + ' finished')
+        print('next url: ' + url)
+        lesson = lesson + 1
+
+    except urllib.error.URLError:
+        print("html retry")

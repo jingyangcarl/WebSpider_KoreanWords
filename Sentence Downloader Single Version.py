@@ -42,7 +42,7 @@ HTMLRetryTime = 0
 audioNum = 0
 
 while 1:
-    #try:
+    try:
         html = urllib.request.urlopen(request).readlines()
 
         for line in html:
@@ -87,6 +87,6 @@ while 1:
         print('all finished')
         print('Audios: ' + str(audioNum))
         os._exit(0)
-    #except:
-        #HTMLRetryTime = HTMLRetryTime + 1
-        #print("html retry: " + str(HTMLRetryTime))
+    except:
+        HTMLRetryTime = HTMLRetryTime + 1
+        print("html retry: " + str(HTMLRetryTime))
