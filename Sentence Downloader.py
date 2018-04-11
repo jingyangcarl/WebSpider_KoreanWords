@@ -19,6 +19,9 @@ import os.path
 # Python 3.6.2
 
 # -----------------------------PARAMETER-------------------------------------
+# web page url
+url = 'https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/unit-3-lessons-51-58/lesson-51/'
+lesson = 51
 # downloadPath is used for indicating the path to store files
 dir = 'C:/Users/jingy/Downloads/HowToStudyKorean/'
 # fileFormat is used for indicating the file storage format
@@ -30,23 +33,16 @@ proxy_support = urllib.request.ProxyHandler(proxies[2])
 opener = urllib.request.build_opener(proxy_support)
 urllib.request.install_opener(opener)
 
-# web page url
-url = 'https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-26-33/lesson-32/'
 headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/24.0'}
 HTMLRetryTime = 0
-lesson = 32
 
-while lesson:
+while lesson <= 141:
 
     try:
         # unit number
-        #unit = re.search('unit\d*/', url).group(0)
-        #dirPath = dir + unit
-        unit = int(lesson/25) + 1
+        unit = int((lesson-1)/25) + 1
         dirPath = dir + 'unit' + str(unit) + '/lesson-' + str(lesson) + '/'
         # lesson number
-        #lesson = re.search('lesson-\d*/', url).group(0)
-        #dirPath = dirPath + lesson
 
         # create path
         if not os.path.exists(dirPath):
@@ -54,6 +50,7 @@ while lesson:
 
         request = urllib.request.Request(url, headers=headers)
         html = urllib.request.urlopen(request).readlines()
+        audioLineSet = set()
 
         for line in html:
             # bytes to str
@@ -62,6 +59,7 @@ while lesson:
             line = line.strip('\n')
             audioLine = re.search('<a href=".*?\.mp3">.*?</a>', line)
             if audioLine:
+                audioLineSet.add(audioLine)
                 audioLine = audioLine.group(0)
 
                 # get audio link
@@ -101,13 +99,8 @@ while lesson:
                         print("http.client.RemoteDisconnected: " + audioName + "download retry: " + str(retry))
 
             # find the next link
-            #nextLinkLine_1 = re.search('<a href=".*to the next lesson!</a>', line)
             nextLinkLine_2 = re.search('Lesson \d+', line)
 
-            #if nextLinkLine_1 and nextLinkLine_2:
-            #    url = re.search('http.*"', nextLinkLine_1.group(0)).group(0).rstrip('"')
-            #elif nextLinkLine_1:
-            #    url = re.search('http.*"', nextLinkLine_1.group(0)).group(0).rstrip('"')
             if nextLinkLine_2:
                 # check the lesson number
                 nextLinkLine_2 = re.search('\d+$', nextLinkLine_2.group(0)).group(0)
@@ -118,8 +111,11 @@ while lesson:
                     url = re.search('http.*?"', line).group(0).rstrip('"')
 
         print('lesson ' + str(lesson) + ' finished')
+        print("Lesson " + str(lesson) + ': ' + str(audioLineSet.__len__()))
         print('next url: ' + url)
         lesson = lesson + 1
 
     except urllib.error.URLError:
         print("html retry")
+
+print("exit")
