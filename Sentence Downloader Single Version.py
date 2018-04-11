@@ -63,7 +63,7 @@ while 1:
                 audioName = re.search('>.*<', audioLine)
                 audioName = audioName.group(0).lstrip('>').rstrip('<')
                 audioName = re.sub('<.*?>', '', audioName)
-                audioName = re.sub('[?!/|]', '', audioName)
+                audioName = re.sub('[?!/|\*]', '', audioName)
                 # if there is an illegal symbols, add it into the pattern
                 print("audioName: " + audioName)
 
