@@ -1,4 +1,5 @@
 import urllib.request
+import http
 import re
 import os.path
 
@@ -24,11 +25,16 @@ dir = 'C:/Users/jingy/Downloads/HowToStudyKorean/'
 fileFormat = ".mp3"
 
 # --------------------------------CODE---------------------------------------
+proxies = [{'http':'211.94.69.74:8080'},{'http':'113.128.90.252:48888'},{'http':'113.128.91.92:48888'}]
+proxy_support = urllib.request.ProxyHandler(proxies[2])
+opener = urllib.request.build_opener(proxy_support)
+urllib.request.install_opener(opener)
+
 # web page url
-url = 'https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-1/'
+url = 'https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-26-33/lesson-32/'
 headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/24.0'}
 HTMLRetryTime = 0
-lesson = 1
+lesson = 32
 
 while lesson:
 
@@ -67,15 +73,16 @@ while lesson:
                 audioName = re.search('>.*<', audioLine)
                 audioName = audioName.group(0).lstrip('>').rstrip('<')
                 audioName = re.sub('<.*?>', '', audioName)
-                audioName = re.sub('[?!/|]', '', audioName)
+                audioName = re.sub('[?!/|\*]', '', audioName)
                 # if there is an illegal symbols, add it into the pattern
                 print("audioName: " + audioName)
 
                 # prepare for downloading
                 downloadPath = dirPath + audioName + fileFormat
                 print(downloadPath)
+                retry = 0
 
-                while not os.path.isfile(downloadPath):
+                while not os.path.isfile(downloadPath) and retry < 16:
                     try:
                         audioRequest = urllib.request.Request(audioLink, headers=headers)
                         requestHTML = urllib.request.urlopen(audioRequest).read()
@@ -84,7 +91,14 @@ while lesson:
                         audio.close()
                         print(audioName + " downloaded")
                     except urllib.error.URLError:
-                        print(audioName + " download retry")
+                        retry = retry + 1
+                        print("urllib.error.URLError: " + audioName + " download retry: " + str(retry))
+                    except http.client.IncompleteRead:
+                        retry = retry + 1
+                        print("http.clint.IncompleteRead: " + audioName + "download retry: " + str(retry))
+                    except http.client.RemoteDisconnected:
+                        retry = retry + 1
+                        print("http.client.RemoteDisconnected: " + audioName + "download retry: " + str(retry))
 
             # find the next link
             #nextLinkLine_1 = re.search('<a href=".*to the next lesson!</a>', line)
